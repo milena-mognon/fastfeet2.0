@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import express, { Request, Response, NextFunction } from 'express';
-import AppError from '@shared/error/AppError';
+import 'express-async-errors';
+import AppError from '@shared/errors/AppError';
 
 const app = express();
 
