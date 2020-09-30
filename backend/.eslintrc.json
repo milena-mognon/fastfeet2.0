@@ -36,6 +36,7 @@
       }
     ],
     "no-useless-constructor": "off",
+    "camelcase": "off",
     "import/extensions": [
       "error",
       "ignorePackages",
