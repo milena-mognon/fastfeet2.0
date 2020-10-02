@@ -20,6 +20,7 @@ app.use((err: Error, request: Request, response: Response, _: NextFunction) => {
   }
 
   // print the error on terminal
+  // eslint-disable-next-line no-console
   console.error(err);
 
   // if an error happens without custom message, it answer with generic 500 error
@@ -30,5 +31,6 @@ app.use((err: Error, request: Request, response: Response, _: NextFunction) => {
 });
 
 app.listen(3333, () => {
+  // eslint-disable-next-line no-console
   console.log('🚀 Server started on port 3333!');
 });
