@@ -11,12 +11,9 @@ export default async function CreateUserValidation(
     email: yup.string().email().required(),
     cpf: yup
       .string()
-      .matches(
-        RegExp('/^d{3}.d{3}.d{3}-d{2}$/'),
-        'cpf must follow the correct format',
-      )
+      .matches(/d{3}.d{3}.d{3}-d{2}/)
       .required(),
-    deliveryman: yup.boolean(),
+    deliveryman: yup.boolean().required(),
     password: yup.string().required(),
   });
 
