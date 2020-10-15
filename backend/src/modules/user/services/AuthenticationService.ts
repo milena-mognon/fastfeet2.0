@@ -2,6 +2,8 @@ import IHashProvider from '@shared/container/providers/HashProvider/models/IHash
 import AppError from '@shared/errors/AppError';
 import { inject, injectable } from 'tsyringe';
 import jwt from 'jsonwebtoken';
+import auth from '@config/auth';
+import IAuthTokenProvider from '@shared/container/providers/AuthTokenProvider/models/IAuthTokenProvider';
 import IUserRepository from '../repositories/IUsersRepository';
 import User from '../infra/typeorm/entities/User';
 
@@ -23,13 +25,16 @@ export default class AuthenticationService {
 
     @inject('HashProvider')
     private hashProvider: IHashProvider,
+
+    @inject('AuthTokenProvider')
+    private authTokenProvider: IAuthTokenProvider,
   ) {}
 
   public async execute({ email, password }: ICredentials): Promise<IResponse> {
     const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {
-      throw new AppError('Incorrect credentials');
+      throw new AppError('Incorrect credentials', 401);
     }
 
     const correctPassword = await this.hashProvider.compareHash(
@@ -38,11 +43,10 @@ export default class AuthenticationService {
     );
 
     if (!correctPassword) {
-      throw new AppError('Incorrect credentials');
+      throw new AppError('Incorrect credentials', 401);
     }
 
-    const token = jwt.sign({}, 'teste', { expiresIn: '1d' });
-
+    const token = this.authTokenProvider.createToken(user.id);
     return { user, token };
   }
 }
